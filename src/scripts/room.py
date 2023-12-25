@@ -8,8 +8,9 @@ async def fetch_room_list(building_posts: list[dict]) -> list[dict]:
     async with aiohttp.ClientSession() as session:
         tasks = []
         for building_post in building_posts:
-            tasks.append(asyncio.create_task(
-                fetch_room_page(session, building_post.get("title"), building_post.get("link"))))
+            if building_post.get("link"):
+                tasks.append(asyncio.create_task(
+                    fetch_room_page(session, building_post.get("name"), building_post.get("link"))))
         values = await asyncio.gather(*tasks)
     room_list = []
     for value in values:
