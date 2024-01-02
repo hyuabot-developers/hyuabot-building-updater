@@ -1,6 +1,10 @@
 import asyncio
 
 import aiohttp
+from sqlalchemy import delete, insert
+from sqlalchemy.orm import Session
+
+from models import Building, Room
 
 BASE_URL = "https://m.blog.naver.com/api/blogs/hyerica4473/search/post"
 search_keyword = "%EA%B1%B4%EB%AC%BC%20%EB%82%B4%EB%B6%80%20%EA%B5%AC%EC%A1%B0%EB%8F%84"
@@ -37,3 +41,22 @@ async def fetch_building_page(session, url) -> list[dict]:
     async with session.get(url) as response:
         response_json = await response.json()
         return response_json.get("result").get("list")
+
+
+async def insert_building(db_session: Session, data: list[dict]):
+    delete_statement = delete(Room)
+    db_session.execute(delete_statement)
+    delete_statement = delete(Building)
+    db_session.execute(delete_statement)
+    db_session.execute(
+        insert(Building),
+        list(map(lambda x: {
+            "building_id": x.get("id"),
+            "name": x.get("name"),
+            "campus_id": 2,
+            "latitude": None,
+            "longitude": None,
+            "link": x.get("link")
+        }, data))
+    )
+    db_session.commit()

@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hyuabot-building-updater"
+description = "Scripts to update the building data to use in HYUabot"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    'Environment :: Console',
+    'Operating System :: POSIX :: Linux',
+    'Programming Language :: Python :: 3',
+]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = "requirements.txt", optional = false}
+
+[tool.setuptools.packages.find]
+where = "."
+exclude = ["tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpaths = ["src"]
