@@ -1,4 +1,5 @@
 import asyncio
+import csv
 
 import aiohttp
 from sqlalchemy import delete, insert
@@ -8,6 +9,15 @@ from models import Building, Room
 
 BASE_URL = "https://m.blog.naver.com/api/blogs/hyerica4473/search/post"
 search_keyword = "%EA%B1%B4%EB%AC%BC%20%EB%82%B4%EB%B6%80%20%EA%B5%AC%EC%A1%B0%EB%8F%84"
+
+
+async def parse_building_location() -> dict[str, list[str]]:
+    building_list = {}
+    with open("resources/location.csv", "r", encoding="utf-8") as file:
+        reader = csv.reader(file)
+        for name, latitude, longitude in reader:
+            building_list[name] = [latitude, longitude]
+    return building_list
 
 
 async def fetch_building_list(buildings: list[dict]) -> list[dict]:
@@ -23,6 +33,7 @@ async def fetch_building_list(buildings: list[dict]) -> list[dict]:
     for value in values:
         building_list.extend(filter(lambda x: "건물 내부 구조도" in x.get("title"), value))
 
+    location_list = await parse_building_location()
     for building in building_list:
         title = str(building.get("title"))\
             .replace("[자료실] ", "")\
@@ -31,9 +42,19 @@ async def fetch_building_list(buildings: list[dict]) -> list[dict]:
         if len(list(filter(lambda x: title == x.get("name"), buildings))) > 0:
             item = next(filter(lambda x: title == x.get("name"), buildings))
             item["link"] = f"https://m.blog.naver.com/hyerica4473/{post_no}"
+            if location_list.get(title):
+                item["latitude"] = location_list.get(title)[0]
+                item["longitude"] = location_list.get(title)[1]
         else:
             item = {"name": title, "link": f"https://m.blog.naver.com/hyerica4473/{post_no}"}
+            if location_list.get(title):
+                item["latitude"] = location_list.get(title)[0]
+                item["longitude"] = location_list.get(title)[1]
             buildings.append(item)
+    for building in buildings:
+        if building.get("latitude") is None or building.get("longitude") is None:
+            building["latitude"] = location_list.get(building.get("name"))[0]
+            building["longitude"] = location_list.get(building.get("name"))[1]
     return buildings
 
 
@@ -54,8 +75,8 @@ async def insert_building(db_session: Session, data: list[dict]):
             "building_id": x.get("id"),
             "name": x.get("name"),
             "campus_id": 2,
-            "latitude": None,
-            "longitude": None,
+            "latitude": x.get("latitude"),
+            "longitude": x.get("longitude"),
             "link": x.get("link")
         }, data))
     )

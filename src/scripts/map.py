@@ -21,6 +21,7 @@ async def fetch_campus() -> list[dict]:
                 .replace("창의관", "창의인재관")\
                 .replace("창의인재 교육관", "교육관")\
                 .replace("학술정보관(커리어개발센터)", "학술정보관")\
-                .replace("실용음악관(Muse Hall)", "뮤즈홀(실용음악관)")
+                .replace("실용음악관(Muse Hall)", "뮤즈홀(실용음악관)")\
+                .replace("한양맞춤의약연구원", "맞춤의약연구원(HY-IPT)")
             building_list.append({"id": raw_data[index], "name": name})
     return building_list
