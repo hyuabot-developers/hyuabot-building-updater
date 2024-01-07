@@ -3,8 +3,9 @@ RUN python3.11 -m venv /venv && \
     /venv/bin/pip install --upgrade pip setuptools wheel
 
 COPY pyproject.toml /pyproject.toml
+COPY requirements.txt /requirements.txt
 COPY src /src
-RUN apk add --no-cache --virtual .build-deps gcc libc-dev libxslt-dev && \
+RUN apk add --no-cache --virtual .build-deps gcc libc-dev libxslt-dev libpq-dev && \
     apk add --no-cache libxslt && \
     /venv/bin/pip install --disable-pip-version-check -e / && \
     apk del .build-deps
