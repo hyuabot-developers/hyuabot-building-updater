@@ -54,6 +54,8 @@ async def fetch_room_page(session, name, url) -> list[dict]:
             or len(raw_data[index + 1].strip()) == 0
         ):
             continue
+        elif name == "인재관":
+            continue
         elif (
             name == "제2공학관"
             and raw_data[index] == "103-2"
