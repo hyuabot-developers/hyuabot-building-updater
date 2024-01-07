@@ -19,7 +19,7 @@ class Building(BaseModel):
     campus_id: Mapped[str] = mapped_column("campus_id", Integer)
     latitude: Mapped[float] = mapped_column("latitude", Float)
     longitude: Mapped[float] = mapped_column("longitude", Float)
-    link: Mapped[str] = mapped_column("url", Text)
+    link: Mapped[str] = mapped_column("url", Text, nullable=True)
 
 
 class Room(BaseModel):
