@@ -7,7 +7,8 @@ from scripts.map import fetch_campus
 from scripts.room import fetch_room_list, insert_room
 from utils.database import get_db_engine
 
-if __name__ == "__main__":
+
+def main():
     buildings = asyncio.run(fetch_campus())
     building_posts = asyncio.run(fetch_building_list(buildings))
     rooms = asyncio.run(fetch_room_list(building_posts))
@@ -22,3 +23,7 @@ if __name__ == "__main__":
     session.commit()
     session.close()
     connection.dispose()
+
+
+if __name__ == "__main__":
+    main()

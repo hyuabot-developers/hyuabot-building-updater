@@ -1,5 +1,6 @@
 import asyncio
 import csv
+import os
 
 import aiohttp
 from sqlalchemy import delete, insert
@@ -19,7 +20,12 @@ origin = (
 
 async def parse_building_location() -> dict[str, list[str]]:
     building_list = {}
-    with open("resources/location.csv", "r", encoding="utf-8") as file:
+    script_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(
+        f"{script_path}/resources/location.csv",
+        "r",
+        encoding="utf-8",
+    ) as file:
         reader = csv.reader(file)
         for name, latitude, longitude in reader:
             building_list[name] = [latitude, longitude]
