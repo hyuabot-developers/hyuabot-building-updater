@@ -54,13 +54,38 @@ async def fetch_room_page(session, name, url) -> list[dict]:
             or len(raw_data[index + 1].strip()) == 0
         ):
             continue
-        room_data.append(
-            {
-                "building": name,
-                "number": raw_data[index],
-                "name": raw_data[index + 1],
-            }
-        )
+        elif (
+            name == "제2공학관"
+            and raw_data[index] == "103-2"
+            and raw_data[index + 1] == "세미나실2"
+        ):
+            room_data.append(
+                {
+                    "building": name,
+                    "number": "103-3",
+                    "name": "세미나실2",
+                }
+            )
+        elif (
+            name == "제2공학관"
+            and raw_data[index] == "103-3"
+            and raw_data[index + 1] == "세미나실3"
+        ):
+            room_data.append(
+                {
+                    "building": name,
+                    "number": "103-4",
+                    "name": "세미나실3",
+                }
+            )
+        else:
+            room_data.append(
+                {
+                    "building": name,
+                    "number": raw_data[index],
+                    "name": raw_data[index + 1],
+                }
+            )
     return room_data
 
 
