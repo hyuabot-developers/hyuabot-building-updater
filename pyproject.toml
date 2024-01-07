@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hyuabot-building-updater"
+description = "Scripts to update the building data to use in HYUabot"
+readme = "README.md"
+requires-python = ">=3.11"
+version = "24.01.01"
+classifiers = [
+    'Environment :: Console',
+    'Operating System :: POSIX :: Linux',
+    'Programming Language :: Python :: 3',
+]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = "requirements.txt"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[project.optional-dependencies]
+lint = ["flake8", "flake8-commas"]
+typecheck = ["mypy", "sqlalchemy[mypy]", "types-beautifulsoup4"]
+test = ["pytest", "pytest-asyncio"]
