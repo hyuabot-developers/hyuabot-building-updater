@@ -74,8 +74,12 @@ async def fetch_building_list(buildings: list[dict]) -> list[dict]:
                 "longitude": location[1],
             }
             buildings.append(item)
+    deprecated_building_list = ['국제문화관']
     for building in buildings:
         location = location_list.get(building["name"])
+        if building["name"] in deprecated_building_list:
+            buildings.remove(building)
+            continue
         if location is None:
             raise Exception(f"Location not found: {building.get('name')}")
         if (
