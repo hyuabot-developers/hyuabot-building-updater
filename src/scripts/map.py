@@ -17,11 +17,14 @@ async def fetch_campus() -> list[dict]:
                 data = building.text.strip()
                 if data and data != "\u200b":
                     raw_data.append(data)
-    building_list = []
+    building_list = [
+        {'id': '317', 'name': '융합교육관'}
+    ]
     for index in range(0, len(raw_data) - 1, 2):
         if raw_data[index].isdigit():
             name = (
                 raw_data[index + 1]
+                .replace("국제문화관", "글로벌문화통상관")
                 .replace("Lion's Hall", "라이언스홀")
                 .replace("창의관", "창의인재관")
                 .replace("창의인재 교육관", "교육관")
