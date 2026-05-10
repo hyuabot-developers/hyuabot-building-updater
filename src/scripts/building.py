@@ -55,6 +55,7 @@ async def fetch_building_list(buildings: list[dict]) -> list[dict]:
             str(building.get("title"))
             .replace("[자료실] ", "")
             .replace('<em class="highlight">건물 내부 구조도</em>', "")
+            .replace('(커뮤니케이션&amp;컬처대학)', '')
             .strip()
         )
         post_no = building.get("logNo")
