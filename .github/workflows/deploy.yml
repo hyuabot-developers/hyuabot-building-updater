@@ -1,4 +1,4 @@
-name: Docker Image Deploy
+name: Deploy Docker Image
 on:
   pull_request:
     types:
