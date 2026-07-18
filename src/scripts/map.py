@@ -24,7 +24,8 @@ async def fetch_campus() -> list[dict]:
         if raw_data[index].isdigit():
             name = (
                 raw_data[index + 1]
-                .replace("국제문화관", "글로벌문화통상관")
+                .replace("국제문화관", "솔성관")
+                .replace("글로벌문화통상관", "솔성관")
                 .replace("Lion's Hall", "라이언스홀")
                 .replace("창의관", "창의인재관")
                 .replace("창의인재 교육관", "교육관")
