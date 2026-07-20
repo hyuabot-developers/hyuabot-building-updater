@@ -15,7 +15,7 @@ on:
 jobs:
   publish:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
-    uses: hyuabot-developers/hyuabot-infrastructure/.github/workflows/publish-immutable-image.yml@accefba87348b747359be6ee4a2ed8d16ca625f6
+    uses: hyuabot-developers/hyuabot-infrastructure/.github/workflows/publish-immutable-image.yml@e26660725b546d1de4021f5ac95f1be6c4c17c35
     with:
       image-repository: localhost:5000/hyuabot-building-updater
       no-cache: ${{ github.event_name == 'workflow_dispatch' && inputs['no-cache'] }}
