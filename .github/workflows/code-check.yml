@@ -22,6 +22,9 @@ jobs:
       env:
         REQUIREMENTS_FILE: lint
       run: |
+        python -m venv .venv
+        echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+        source .venv/bin/activate
         python -m pip install -U pip setuptools
         set -e
         python -m pip install -U -e .[${REQUIREMENTS_FILE}]
@@ -86,6 +89,9 @@ jobs:
       env:
         REQUIREMENTS_FILE: test
       run: |
+        python -m venv .venv
+        echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+        source .venv/bin/activate
         python -m pip install -U pip setuptools
         python -m pip install -U -e .[${REQUIREMENTS_FILE}]
     - name: Test with pytest
