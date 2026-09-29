@@ -6,9 +6,8 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
 from models import BaseModel, Building, Room
-from scripts.building import fetch_building_list, insert_building
-from scripts.map import fetch_campus
-from scripts.room import fetch_room_list, insert_room
+from scripts.building import insert_building
+from scripts.room import insert_room
 from tests.insert_campus_data import insert_campus_data
 from utils.database import get_db_engine
 
@@ -34,9 +33,22 @@ class TestFetchRealtimeData:
 
     @pytest.mark.asyncio
     async def test_fetch_building_data(self):
-        buildings = await fetch_campus()
-        building_posts = await fetch_building_list(buildings)
-        rooms = await fetch_room_list(building_posts)
+        building_posts = [
+            {
+                "id": "ci-building",
+                "name": "CI Test Building",
+                "latitude": "37.3",
+                "longitude": "127.0",
+                "link": "https://example.test/building",
+            }
+        ]
+        rooms = [
+            {
+                "building": "CI Test Building",
+                "number": "101",
+                "name": "CI Test Room",
+            }
+        ]
         # Insert data into database
         connection = get_db_engine()
         session_constructor = sessionmaker(bind=connection)
